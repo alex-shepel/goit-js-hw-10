@@ -8,7 +8,10 @@ export default class CoutriesService {
     const url = `${API_URL}/${RES}/${name}?fields=${FILTER.join(',')}`;
 
     return fetch(url)
-      .then(r => r.json())
+      .then(r => {
+        if (r.ok) return r.json();
+        throw new Error(r.statusText);
+      })
       .then(data => data.map(item => this.#format(item)));
   }
 
